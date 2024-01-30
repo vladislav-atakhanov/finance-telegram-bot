@@ -11,3 +11,5 @@ WHERE
     julianday (CURRENT_TIMESTAMP) - julianday (date (date_, 'unixepoch')) <= 30
 GROUP BY
     Category.id
+ORDER BY
+    sum(price) DESC

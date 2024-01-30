@@ -7,3 +7,5 @@ JOIN
     Category on Category.id = category_id
 WHERE
     Product.user_id=?
+ORDER BY
+    Product.title

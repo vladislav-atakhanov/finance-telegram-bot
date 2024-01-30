@@ -9,3 +9,5 @@ WHERE
     julianday(CURRENT_TIMESTAMP) - julianday(date(date_, 'unixepoch')) <= 30
 GROUP BY
     date(date_, 'unixepoch')
+ORDER BY
+    date_
