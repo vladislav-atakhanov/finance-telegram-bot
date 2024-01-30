@@ -47,7 +47,7 @@ const getExpensesByDay = async (userId, date) => {
 
     for (const group of groupBy(expenses, "meta")) {
         if (group.length < 1) continue
-        const meta = group[0].meta || "&lt;без категории&gt;"
+        const meta = group[0].meta || "&lt;не указано&gt;"
         const { text, sum } = ExpensesCard(group)
         messageText += `<b>${meta} ${sum}</b>\n${text}\n`
         totalSum += sum
