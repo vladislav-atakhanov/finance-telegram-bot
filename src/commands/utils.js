@@ -74,4 +74,4 @@ export const requestCategoryId = async (bot, productTitle, userId) => {
 
 /** @param {string} markup */
 export const html = (markup) =>
-    markup.replaceAll("\n", "").replaceAll("<br>", "\n")
+    markup.replaceAll("\n", " ").replaceAll("<br>", "\n")
