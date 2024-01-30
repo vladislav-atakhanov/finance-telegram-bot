@@ -21,13 +21,12 @@ export const insertProduct = async (title, categoryId, userId) => {
  * @param {number} userId
  * @return {Promise<import("./@types.ts").Product>}
  */
-export const getProduct = async (title, userId) => {
-    return await database.get(
-        `SELECT * FROM Product WHERE title=? AND user_id=?`,
+export const getProduct = async (title, userId) =>
+    database.get(
+        `SELECT * FROM Product WHERE title=? COLLATE NOCASE AND user_id=?`,
         title,
         userId
     )
-}
 
 /**
  *

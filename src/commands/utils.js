@@ -60,8 +60,7 @@ export const requestCategoryId = async (bot, productTitle, userId) => {
             },
         }
     )
-    const { text } = await getAnswer(userId)
-    const category = text.toLowerCase()
+    const { text: category } = await getAnswer(userId)
 
     return (
         categories.find(({ title }) => category === title)?.id ??

@@ -42,7 +42,6 @@ await commandRouter.apply()
  * @param {number} userId
  */
 const getProductId = async (title, userId) => {
-    title = title.toLowerCase()
     const product = await getProduct(title, userId)
     if (product) return product.id
 

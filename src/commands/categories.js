@@ -77,7 +77,7 @@ export const renameCategory = async (message, bot) => {
         parse_mode: "HTML",
     })
     const { text: newTitle } = await getAnswer(chatId)
-    changeCategoryTitle(category.id, newTitle.toLowerCase(), chatId)
+    changeCategoryTitle(category.id, newTitle, chatId)
     applyCategoryChanges(bot, chatId, lastMessages.get(chatId))
     return true
 }

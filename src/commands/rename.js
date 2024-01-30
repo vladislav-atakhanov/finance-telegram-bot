@@ -23,7 +23,7 @@ export const rename = async (message, bot) => {
         parse_mode: "HTML",
     })
     const { text: newTitle } = await getAnswer(chatId)
-    changeProductTitle(product.id, newTitle.toLowerCase(), chatId)
+    changeProductTitle(product.id, newTitle, chatId)
     applyProductChanges(bot, chatId, lastMessages.get(chatId))
     return true
 }
