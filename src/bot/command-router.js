@@ -35,7 +35,8 @@ export const CommandRouter = (bot) => {
                         : async (message) => {
                               await bot.sendMessage(
                                   message.chat.id,
-                                  handlerOrMessage
+                                  handlerOrMessage,
+                                  { parse_mode: "HTML" }
                               )
                           },
             })

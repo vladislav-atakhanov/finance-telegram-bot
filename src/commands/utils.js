@@ -71,3 +71,7 @@ export const requestCategoryId = async (bot, productTitle, userId) => {
         (await insertCategory(category, userId))
     )
 }
+
+/** @param {string} markup */
+export const html = (markup) =>
+    markup.replaceAll("\n", "").replaceAll("<br>", "\n")

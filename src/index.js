@@ -6,31 +6,22 @@ import {
     insertProduct,
     getDayExpensesSum,
 } from "./database/index.js"
-import { CommandRouter, checkAnswer, getAnswer } from "./bot/index.js"
+import { CommandRouter, checkAnswer } from "./bot/index.js"
 import { parseMessage } from "./finance/index.js"
 import { formatDate, formatPrice } from "./finance/utils.js"
-import {
-    productsCommand,
-    todayCommand,
-    categoriesCommand,
-    renameCategory,
-    monthCommand,
-    setMonthView,
-    changeCategory,
-    rename,
-    changeProductsPage,
-    helpCommand,
-} from "./commands/index.js"
+import * as c from "./commands/index.js"
 import { expensesHelp } from "./views/index.js"
 import { lastMessages, requestCategoryId } from "./commands/utils.js"
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true })
 const commandRouter = CommandRouter(bot)
-commandRouter.add("/help", "Помощь", helpCommand)
-commandRouter.add("/today", "Траты за сегодня", todayCommand)
-commandRouter.add("/products", "Продукты и их категории", productsCommand)
-commandRouter.add("/categories", "Все категории", categoriesCommand)
-commandRouter.add("/month", "Траты за последний месяц", monthCommand)
+commandRouter.add("/today", "Траты за сегодня", c.todayCommand)
+commandRouter.add("/month", "Траты за последний месяц", c.monthCommand)
+commandRouter.add("/products", "Продукты и их категории", c.productsCommand)
+commandRouter.add("/categories", "Все категории", c.categoriesCommand)
+commandRouter.add("/help", "Помощь", c.helpCommand)
+commandRouter.add("/start", "Приветственное сообщение", c.startCommand)
+commandRouter.add("/group", "Как добавить бота в группу", c.groupCommand)
 await commandRouter.apply()
 
 /**
@@ -81,8 +72,8 @@ bot.on("callback_query", async (query) => {
     const [command, ...args] = query.data.split(":")
 
     if (command === "products")
-        return changeProductsPage(bot, query.message, parseInt(args[0]))
-    if (command === "month") return setMonthView(bot, query.message, args[0])
+        return c.changeProductsPage(bot, query.message, parseInt(args[0]))
+    if (command === "month") return c.setMonthView(bot, query.message, args[0])
 })
 
 bot.on("message", async (message) => {
@@ -90,9 +81,9 @@ bot.on("message", async (message) => {
     if (checkAnswer(message)) return
     if (!message.text) return
     if (await commandRouter.answer(message)) return
-    if (await renameCategory(message, bot)) return
-    if (await changeCategory(message, bot)) return
-    if (await rename(message, bot)) return
+    if (await c.renameCategory(message, bot)) return
+    if (await c.changeCategory(message, bot)) return
+    if (await c.rename(message, bot)) return
 
     const userId = message.chat.id
     const expenses = parseMessage(message.text)
