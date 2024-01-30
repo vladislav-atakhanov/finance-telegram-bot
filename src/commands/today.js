@@ -1,5 +1,5 @@
 import { getDayExpenses } from "../database/index.js"
-import { RemoveButton } from "./utils.js"
+import { RemoveKeyboard } from "./utils.js"
 
 /**
  * @template {Record<string, unknown>} T
@@ -70,7 +70,7 @@ export const todayCommand = async (message, bot) => {
         message.chat.id,
         "<u>Траты за сегодня</u>\n\n" + messageText,
         {
-            reply_markup: RemoveButton(message.message_id),
+            reply_markup: RemoveKeyboard(message.message_id),
             parse_mode: "HTML",
         }
     )

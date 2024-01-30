@@ -3,7 +3,7 @@ import {
     changeCategoryTitle,
     getCategoryById,
 } from "../database/index.js"
-import { RemoveButton, deleteMessagesFromId, lastMessages } from "./utils.js"
+import { RemoveKeyboard, deleteMessagesFromId, lastMessages } from "./utils.js"
 import { getAnswer } from "../bot/index.js"
 import { first } from "../fp/index.js"
 import { unknownCategory, writeNewTitleFor } from "../views/index.js"
@@ -35,7 +35,7 @@ export const applyCategoryChanges = async (bot, userId, lastMessageId) => {
         chat_id: userId,
         message_id: self,
         parse_mode: "HTML",
-        reply_markup: RemoveButton(request),
+        reply_markup: RemoveKeyboard(request),
     }).catch(() => {})
     if (!lastMessageId) return
     deleteMessagesFromId(bot, userId, self + 1, lastMessageId)
@@ -50,7 +50,7 @@ export const categoriesCommand = async (message, bot) => {
         await getCategoriesText(chatId),
         {
             parse_mode: "HTML",
-            reply_markup: RemoveButton(request),
+            reply_markup: RemoveKeyboard(request),
         }
     )
     categoriesMessages.set(chatId, { self, request })

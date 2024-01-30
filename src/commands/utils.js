@@ -19,9 +19,13 @@ export const deleteMessagesFromId = (bot, chatId, fromId, toId) =>
 
 /** @param {number} [messageId] */
 export const RemoveButton = (messageId) => ({
-    inline_keyboard: [
-        [{ text: "Удалить", callback_data: `remove${messageId ?? ""}` }],
-    ],
+    text: "Удалить",
+    callback_data: `remove${messageId ?? ""}`,
+})
+
+/** @param {number} [messageId] */
+export const RemoveKeyboard = (messageId) => ({
+    inline_keyboard: [[RemoveButton(messageId)]],
 })
 
 /** @type {Map<number, number>} */
