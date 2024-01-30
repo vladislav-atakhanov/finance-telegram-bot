@@ -11,10 +11,10 @@ export const byCategoryCommand = async (message, bot) => {
         text += `${category} ${formatPrice(value)}\n`
         sum += value
         return text
-    }, "<b>Траты за последний месяц</b>\n")
+    }, "<b>Траты за последний месяц</b>\n\n")
     bot.sendMessage(
         message.chat.id,
-        `${text}Итого: <u>${formatPrice(sum)}</u>`,
+        `${text}\nИтого: <u>${formatPrice(sum)}</u>`,
         { parse_mode: "HTML", reply_markup: RemoveButton(message.message_id) }
     )
 }
