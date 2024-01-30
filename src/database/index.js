@@ -28,6 +28,15 @@ export const getDayExpensesSum = async (userId, date) => {
     )
     return value ?? 0
 }
+
+/**
+ * @param {number} userId
+ * @param {Date} date
+ * @returns {Promise<{meta: string, title: string, price: number}[]>}
+ */
+export const getDayExpenses = (userId, date) =>
+    database.all(sql("day-expenses"), userId, Timestamp(date))
+
 /**
  * @param {number} userId
  * @returns {Promise<{date: number, value: number}[]>}
