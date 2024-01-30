@@ -23,7 +23,7 @@ const CALLBACK_PREFIX = "products"
  * @param {number} pageIndex
  */
 const getProductsText = async (userId, pageIndex) => {
-    const atPage = 5
+    const atPage = 3
     const products = await getAllProducts(userId)
 
     const startIndex = pageIndex * atPage
