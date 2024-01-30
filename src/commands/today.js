@@ -27,7 +27,7 @@ const groupBy = (array, key) => {
 const ExpensesCard = (expenses) => {
     if (expenses.length === 1) {
         const { price, meta, title } = expenses[0]
-        if (title === meta)
+        if (title.toLowerCase() === meta.toLowerCase())
             return {
                 text: "",
                 sum: price,

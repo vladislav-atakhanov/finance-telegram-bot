@@ -9,8 +9,10 @@ CREATE TABLE
     IF NOT EXISTS Product (
         id integer primary key autoincrement,
         title varchar(255) not null,
+        criterion varchar(255) not null,
         category_id int,
-        user_id int
+        user_id int,
+        foreign key (category_id) references Category (id)
     );
 
 CREATE TABLE

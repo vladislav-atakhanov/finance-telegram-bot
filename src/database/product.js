@@ -7,8 +7,9 @@ import { database, sql } from "./core.js"
  */
 export const insertProduct = async (title, categoryId, userId) => {
     const { lastID } = await database.run(
-        `insert into Product (title, category_id, user_id) VALUES (?, ?, ?)`,
+        `insert into Product (title, criterion, category_id, user_id) VALUES (?, ?, ?, ?)`,
         title,
+        title.toLowerCase(),
         categoryId,
         userId
     )
@@ -21,12 +22,13 @@ export const insertProduct = async (title, categoryId, userId) => {
  * @param {number} userId
  * @return {Promise<import("./@types.ts").Product>}
  */
-export const getProduct = async (title, userId) =>
-    database.get(
-        `SELECT * FROM Product WHERE title=? COLLATE NOCASE AND user_id=?`,
-        title,
+export const getProduct = async (title, userId) => {
+    return database.get(
+        `SELECT * FROM Product WHERE criterion=? COLLATE NOCASE AND user_id=?`,
+        title.toLocaleLowerCase(),
         userId
     )
+}
 
 /**
  *
