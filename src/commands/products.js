@@ -94,13 +94,9 @@ export const changeProductsPage = async (bot, message, currentPage) => {
  * @param {import("node-telegram-bot-api")} bot
  */
 export const changeCategory = async (message, bot) => {
-    const {
-        text = "",
-        chat: { id: chatId },
-    } = message
-    if (!text.startsWith("/change_category")) return false
-
-    const id = first(text.slice("/change_category".length).split("@"))
+    const chatId = message.chat.id
+    if (!message.text.startsWith("/change_category")) return false
+    const id = first(message.text.slice("/change_category".length).split("@"))
     const product = await getProductById(parseInt(id), chatId)
     if (!product) return bot.sendMessage(chatId, unknownProduct(id))
     const categoryId = await requestCategoryId(bot, product.title, chatId)

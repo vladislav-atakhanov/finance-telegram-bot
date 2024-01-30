@@ -19,13 +19,14 @@ import {
     changeCategory,
     rename,
     changeProductsPage,
+    helpCommand,
 } from "./commands/index.js"
 import { expensesHelp } from "./views/index.js"
 import { lastMessages, requestCategoryId } from "./commands/utils.js"
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true })
 const commandRouter = CommandRouter(bot)
-commandRouter.add("/help", "Помощь", "Введите траты за сегодня")
+commandRouter.add("/help", "Помощь", helpCommand)
 commandRouter.add("/today", "Траты за сегодня", todayCommand)
 commandRouter.add("/products", "Продукты и их категории", productsCommand)
 commandRouter.add("/categories", "Все категории", categoriesCommand)
@@ -64,7 +65,7 @@ const addExpenses = async ({ meta, items }, userId) => {
     const todaySum_ = formatPrice(todaySum)
     await bot.sendMessage(
         userId,
-        `Итого ${day} ${sum_}\nЗа сегодня ${todaySum_}`,
+        `Итого ${day} - ${sum_}\nЗа сегодня - ${todaySum_}`,
         { reply_markup: { remove_keyboard: true } }
     )
 }
@@ -79,11 +80,8 @@ bot.on("callback_query", async (query) => {
     }
     const [command, ...args] = query.data.split(":")
 
-    if (command === "products") {
-        const pageIndex = parseInt(args[0])
-        changeProductsPage(bot, query.message, pageIndex)
-        return
-    }
+    if (command === "products")
+        return changeProductsPage(bot, query.message, parseInt(args[0]))
     if (command === "month") return setMonthView(bot, query.message, args[0])
 })
 
@@ -96,12 +94,8 @@ bot.on("message", async (message) => {
     if (await changeCategory(message, bot)) return
     if (await rename(message, bot)) return
 
-    const {
-        text,
-        chat: { id },
-    } = message
-
-    const expenses = parseMessage(text)
-    if (expenses.items.length > 0) return addExpenses(expenses, id)
-    bot.sendMessage(id, expensesHelp(), { parse_mode: "HTML" })
+    const userId = message.chat.id
+    const expenses = parseMessage(message.text)
+    if (expenses.items.length > 0) return addExpenses(expenses, userId)
+    bot.sendMessage(userId, expensesHelp(), { parse_mode: "HTML" })
 })

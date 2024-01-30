@@ -61,13 +61,9 @@ export const categoriesCommand = async (message, bot) => {
  * @param {import("node-telegram-bot-api")} bot
  */
 export const renameCategory = async (message, bot) => {
-    const {
-        text = "",
-        chat: { id: chatId },
-    } = message
-    if (!text.startsWith("/rename_category")) return false
-
-    const id = first(text.slice("/rename_category".length).split("@"))
+    const chatId = message.chat.id
+    if (!message.text.startsWith("/rename_category")) return false
+    const id = first(message.text.slice("/rename_category".length).split("@"))
     const category = await getCategoryById(parseInt(id), chatId)
     if (!category) return bot.sendMessage(chatId, unknownCategory(id))
     await bot.sendMessage(chatId, writeNewTitleFor(category.title), {

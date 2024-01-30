@@ -10,7 +10,7 @@ export const byCategoryText = async (userId) => {
 
     let sum = 0
     const text = expenses.reduce((text, { category, value }) => {
-        text += `${category} ${formatPrice(value)}\n`
+        text += `${category} - ${formatPrice(value)}\n`
         sum += value
         return text
     }, "<b>Траты за последний месяц</b>\n\n")
