@@ -1,6 +1,5 @@
 export { todayCommand } from "./today.js"
-export { byDayCommand } from "./by-day.js"
-export { byCategoryCommand } from "./by-category.js"
 export { rename } from "./rename.js"
+export * from "./month.js"
 export * from "./products.js"
 export * from "./categories.js"

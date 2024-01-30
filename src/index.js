@@ -11,11 +11,11 @@ import { parseMessage } from "./finance/index.js"
 import { formatDate, formatPrice } from "./finance/utils.js"
 import {
     productsCommand,
-    byDayCommand,
     todayCommand,
-    byCategoryCommand,
     categoriesCommand,
     renameCategory,
+    monthCommand,
+    setMonthView,
     changeCategory,
     rename,
     changeProductsPage,
@@ -29,12 +29,7 @@ commandRouter.add("/help", "Помощь", "Введите траты за се�
 commandRouter.add("/today", "Траты за сегодня", todayCommand)
 commandRouter.add("/products", "Продукты и их категории", productsCommand)
 commandRouter.add("/categories", "Все категории", categoriesCommand)
-commandRouter.add("/by_day", "Траты за последний месяц по дням", byDayCommand)
-commandRouter.add(
-    "/by_category",
-    "Траты за последний месяц по категориям",
-    byCategoryCommand
-)
+commandRouter.add("/month", "Траты за последний месяц", monthCommand)
 await commandRouter.apply()
 
 /**
@@ -82,11 +77,14 @@ bot.on("callback_query", async (query) => {
         if (messageId) bot.deleteMessage(chatId, messageId)
         return
     }
-    if (query.data.startsWith("products:")) {
-        const pageIndex = parseInt(query.data.slice("products:".length))
+    const [command, ...args] = query.data.split(":")
+
+    if (command === "products") {
+        const pageIndex = parseInt(args[0])
         changeProductsPage(bot, query.message, pageIndex)
         return
     }
+    if (command === "month") return setMonthView(bot, query.message, args[0])
 })
 
 bot.on("message", async (message) => {
