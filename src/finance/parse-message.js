@@ -38,7 +38,8 @@ const parseExpense = (words) => {
     let price = parsePrice(words.pop())
     let product = words
 
-    if (isNumber(first(words))) amount = parseFloat(words.shift())
+    if (isNumber(first(words)))
+        amount = parseFloat(words.shift().replace(".", ","))
     return { amount, product: product.join(" "), price }
 }
 

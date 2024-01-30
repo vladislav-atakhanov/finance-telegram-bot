@@ -24,7 +24,7 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS Expense (
         id integer primary key autoincrement,
-        amount int default 1,
+        amount float default 1,
         price money not null,
         product_id int,
         meta_id int not null,
