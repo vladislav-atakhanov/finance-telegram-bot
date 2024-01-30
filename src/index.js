@@ -78,12 +78,12 @@ bot.on("callback_query", async (query) => {
 
 bot.on("message", async (message) => {
     lastMessages.set(message.chat.id, message.message_id)
-    if (checkAnswer(message)) return
-    if (!message.text) return
+    if (!message.text) return checkAnswer(message)
     if (await commandRouter.answer(message)) return
     if (await c.renameCategory(message, bot)) return
     if (await c.changeCategory(message, bot)) return
     if (await c.rename(message, bot)) return
+    if (checkAnswer(message)) return
 
     const userId = message.chat.id
     const expenses = parseMessage(message.text)
