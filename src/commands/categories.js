@@ -16,11 +16,8 @@ const getCategoriesText = async (userId) => {
     const categories = await getAllCategories(userId)
     return categories.reduce(
         (text, { id, title }) =>
-            text +
-            [`<b>${title}</b>`, `Переименовать /rename_category${id}`].join(
-                "\n"
-            ) +
-            "\n\n",
+            `${text}<b>${title}</b>
+/rename_category${id} - переименовать\n\n`,
         "<u>Категории</u>\n\n"
     )
 }
