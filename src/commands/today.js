@@ -25,6 +25,14 @@ const groupBy = (array, key) => {
  * @param {Awaited<ReturnType<getDayExpenses>>} expenses
  */
 const ExpensesCard = (expenses) => {
+    if (expenses.length === 1) {
+        const { price, meta, title } = expenses[0]
+        if (title === meta)
+            return {
+                text: "",
+                sum: price,
+            }
+    }
     let text = ""
     let sum = 0
     for (const { price, title } of expenses) {
@@ -49,7 +57,7 @@ const getExpensesByDay = async (userId, date) => {
         if (group.length < 1) continue
         const meta = group[0].meta || "&lt;не указано&gt;"
         const { text, sum } = ExpensesCard(group)
-        messageText += `<b>${meta} ${sum}</b>\n${text}\n`
+        messageText += `<b>${meta} - ${sum}</b>\n${text}\n`
         totalSum += sum
     }
     return messageText + `Итого: <u>${totalSum}</u>`
