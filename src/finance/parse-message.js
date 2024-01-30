@@ -47,7 +47,8 @@ const parseExpense = (words) => {
  * @returns {import("./@types.ts").Expenses}
  */
 export const parseMessage = (message) => {
-    return message.split("\n").reduce(
+    /** @type {import("./@types.ts").Expenses} */
+    const expenses = message.split("\n").reduce(
         (expenses, line) => {
             const words = line.trim().split(" ")
             if (words.length === 1) {
@@ -64,4 +65,7 @@ export const parseMessage = (message) => {
         },
         { meta: { date: new Date() }, items: [] }
     )
+    if (!expenses.meta.title && expenses.items.length === 1)
+        expenses.meta.title = expenses.items[0].product
+    return expenses
 }
