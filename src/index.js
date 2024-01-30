@@ -18,6 +18,7 @@ import {
     renameCategory,
     changeCategory,
     rename,
+    changeProductsPage,
 } from "./commands/index.js"
 import { expensesHelp } from "./views/index.js"
 import { lastMessages, requestCategoryId } from "./commands/utils.js"
@@ -80,6 +81,11 @@ bot.on("callback_query", async (query) => {
         bot.deleteMessage(chatId, query.message.message_id)
         const messageId = parseInt(query.data.slice("remove".length))
         if (messageId) bot.deleteMessage(chatId, messageId)
+        return
+    }
+    if (query.data.startsWith("products:")) {
+        const pageIndex = parseInt(query.data.slice("products:".length))
+        changeProductsPage(bot, query.message, pageIndex)
         return
     }
 })
