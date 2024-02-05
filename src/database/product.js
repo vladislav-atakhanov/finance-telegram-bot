@@ -66,8 +66,9 @@ export const changeProductCategory = (productId, categoryId, userId) =>
  */
 export const changeProductTitle = (productId, newTitle, userId) =>
     database.run(
-        `UPDATE Product SET title=? WHERE id=? AND user_id=?`,
+        `UPDATE Product SET title=?, criterion=? WHERE id=? AND user_id=?`,
         newTitle,
+        newTitle.toLowerCase(),
         productId,
         userId
     )
