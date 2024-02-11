@@ -16,10 +16,17 @@ export const rename = async (message, bot) => {
     const id = first(message.text.slice("/rename".length).split("@"))
     const product = await getProductById(parseInt(id), chatId)
     if (!product) return bot.sendMessage(chatId, unknownProduct(id))
-    await bot.sendMessage(chatId, writeNewTitleFor(product.title), {
-        parse_mode: "HTML",
-    })
-    const { text: newTitle } = await getAnswer(chatId)
+    const { message_id } = await bot.sendMessage(
+        chatId,
+        writeNewTitleFor(product.title),
+        { parse_mode: "HTML" }
+    )
+    const { text: newTitle, message_id: answerMessageId } = await getAnswer(
+        chatId
+    )
+    bot.deleteMessage(chatId, message_id)
+    bot.deleteMessage(chatId, answerMessageId)
+    bot.deleteMessage(chatId, message.message_id)
     changeProductTitle(product.id, newTitle, chatId)
     applyProductChanges(bot, chatId, lastMessages.get(chatId))
     return true

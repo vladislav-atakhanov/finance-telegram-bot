@@ -13,12 +13,15 @@ export const alias = async (message, bot) => {
     const id = first(message.text.slice("/alias".length).split("@"))
     const product = await getProductById(parseInt(id), chatId)
     if (!product) return bot.sendMessage(chatId, unknownProduct(id))
-    await bot.sendMessage(
+    const { message_id } = await bot.sendMessage(
         chatId,
         `Введите псевдоним для <b>${product.title}</b>`,
         { parse_mode: "HTML" }
     )
-    const { text: alias } = await getAnswer(chatId)
+    const { text: alias, message_id: answerMessageId } = await getAnswer(chatId)
+    bot.deleteMessage(chatId, message_id)
+    bot.deleteMessage(chatId, answerMessageId)
+    bot.deleteMessage(chatId, message.message_id)
     addAlias(product.id, alias, chatId)
     return true
 }
