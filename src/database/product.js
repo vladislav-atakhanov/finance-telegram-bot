@@ -7,13 +7,45 @@ import { database, sql } from "./core.js"
  */
 export const insertProduct = async (title, categoryId, userId) => {
     const { lastID } = await database.run(
-        `insert into Product (title, criterion, category_id, user_id) VALUES (?, ?, ?, ?)`,
+        `insert into Product (title, category_id, user_id) VALUES (?, ?, ?, ?)`,
         title,
-        title.toLowerCase(),
         categoryId,
         userId
     )
+    addAlias(lastID, title, userId)
     return lastID
+}
+
+/**
+ *
+ * @param {number} productId
+ * @param {string} alias
+ * @param {number} userId
+ */
+export const addAlias = async (productId, alias, userId) => {
+    alias = alias.toLowerCase()
+
+    database.run(
+        `INSERT INTO Alias (alias, product_id) VALUES (?, ?)`,
+        alias,
+        productId
+    )
+
+    const products = await getAllProducts(userId)
+    products.forEach(({ id, title }) => {
+        if (title.toLowerCase() !== alias) return
+        database.run(
+            `UPDATE Expense SET product_id=? WHERE product_id=?`,
+            productId,
+            id
+        )
+        database.run(
+            `UPDATE Alias SET product_id=? WHERE product_id=?`,
+            productId,
+            id
+        )
+        database.run(`DELETE FROM Product WHERE id=? AND user_id=?`, id, userId)
+    })
 }
 
 /**
@@ -22,13 +54,12 @@ export const insertProduct = async (title, categoryId, userId) => {
  * @param {number} userId
  * @return {Promise<import("./@types.ts").Product>}
  */
-export const getProduct = async (title, userId) => {
-    return database.get(
-        `SELECT * FROM Product WHERE criterion=? COLLATE NOCASE AND user_id=?`,
-        title.toLocaleLowerCase(),
-        userId
+export const getProduct = async (title, userId) =>
+    database.get(
+        `SELECT * FROM Product WHERE user_id=? AND id=(SELECT product_id from Alias WHERE alias=?)`,
+        userId,
+        title.toLowerCase()
     )
-}
 
 /**
  *
@@ -66,13 +97,11 @@ export const changeProductCategory = (productId, categoryId, userId) =>
  */
 export const changeProductTitle = (productId, newTitle, userId) =>
     database.run(
-        `UPDATE Product SET title=?, criterion=? WHERE id=? AND user_id=?`,
+        `UPDATE Product SET title=? WHERE id=? AND user_id=?`,
         newTitle,
-        newTitle.toLowerCase(),
         productId,
         userId
     )
-
 /**
  * @param {number} userId
  * @returns {Promise<{

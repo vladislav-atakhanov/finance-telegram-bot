@@ -75,3 +75,11 @@ export const requestCategoryId = async (bot, productTitle, userId) => {
 /** @param {string} markup */
 export const html = (markup) =>
     markup.replaceAll("\n", " ").replaceAll("<br>", "\n")
+
+/**
+ *
+ * @param {string} a
+ * @param {string} b
+ * @returns {boolean}
+ */
+export const compareStrings = (a, b) => a.toLowerCase() === b.toLowerCase()

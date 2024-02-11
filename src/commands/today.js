@@ -1,5 +1,5 @@
 import { getDayExpenses } from "../database/index.js"
-import { RemoveKeyboard } from "./utils.js"
+import { RemoveKeyboard, compareStrings } from "./utils.js"
 
 /**
  * @template {Record<string, unknown>} T
@@ -27,7 +27,7 @@ const groupBy = (array, key) => {
 const ExpensesCard = (expenses) => {
     if (expenses.length === 1) {
         const { price, meta, title } = expenses[0]
-        if (title.toLowerCase() === meta.toLowerCase())
+        if (compareStrings(title, meta))
             return {
                 text: "",
                 sum: price,

@@ -8,4 +8,5 @@ export const expensesHelp = () => `Формат сообщения с трата
 export const productCard = ({ category, id, title }) => `<b>${title}</b>
 ${category}
 /rename${id} - переименовать
+/alias${id} - добавить псевдоним
 /change_category${id} - сменить категорию\n\n`

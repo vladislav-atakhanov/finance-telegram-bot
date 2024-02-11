@@ -1,5 +1,6 @@
 export { todayCommand } from "./today.js"
 export { rename } from "./rename.js"
+export { alias } from "./alias.js"
 export { groupCommand } from "./group.js"
 export * from "./month.js"
 export * from "./products.js"

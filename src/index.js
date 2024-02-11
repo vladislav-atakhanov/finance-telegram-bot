@@ -83,6 +83,7 @@ bot.on("message", async (message) => {
     if (await c.renameCategory(message, bot)) return
     if (await c.changeCategory(message, bot)) return
     if (await c.rename(message, bot)) return
+    if (await c.alias(message, bot)) return
     if (checkAnswer(message)) return
 
     const userId = message.chat.id
