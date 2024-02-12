@@ -7,7 +7,7 @@ import { database, sql } from "./core.js"
  */
 export const insertProduct = async (title, categoryId, userId) => {
     const { lastID } = await database.run(
-        `insert into Product (title, category_id, user_id) VALUES (?, ?, ?, ?)`,
+        `insert into Product (title, category_id, user_id) VALUES (?, ?, ?)`,
         title,
         categoryId,
         userId
